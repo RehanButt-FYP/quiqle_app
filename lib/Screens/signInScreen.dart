@@ -1,6 +1,8 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:quiqle_app/Screens/forgotPasswordScreen.dart';
-import 'package:quiqle_app/Screens/homepage.dart';
+import 'package:quiqle_app/Screens/homePage.dart';
 import 'package:quiqle_app/Screens/signUpScreen.dart';
 import 'package:quiqle_app/Widgets/button.dart';
 import 'dart:ui';
@@ -17,6 +19,24 @@ class _SignInScreenState extends State<SignInScreen> {
   double sigmaX = 0.0; // from 0-10
   double sigmaY = 0.0; // from 0-10
   double _opacity = 0.1; // from 0-1.0
+
+  /* Input Fields For Email and Password
+  * */
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  void _attempLogin(){
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    if(EmailValidator.validate(email)){
+
+    }else if(email.isEmpty){
+        _showToast("Please enter email");
+    }else{
+      _showToast("Please enter valid email");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +88,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       height: 40,
                     ),
                     TextFormField(
+                      controller: _emailController,
                       style: TextStyle(color: config.kTextFieldColor,
                         fontSize: config.kTextfieldLabelFontSize,
                         fontFamily: 'Poppins-M',
@@ -94,6 +115,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       height: 20,
                     ),
                     TextFormField(
+                      controller: _passwordController,
                       style: TextStyle(color: config.kTextFieldColor,
                         fontSize: config.kTextfieldLabelFontSize,
                         fontFamily: 'Poppins-M',
@@ -152,9 +174,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal:50.0,),
                       child: Button(
-                        onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePageMap()));
-                        },
+                        onTap: _attempLogin,
                         buttonText: 'Sign In',
                         width: double.infinity,
                       ),
@@ -191,6 +211,18 @@ class _SignInScreenState extends State<SignInScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  void _showToast(String message, ){
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: config.kSecondaryColor,
+        textColor: Colors.black,
+        fontSize: 16.0
     );
   }
 }

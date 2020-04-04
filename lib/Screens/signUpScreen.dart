@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:quiqle_app/Screens/signin_screen.dart';
+import 'package:quiqle_app/Screens/signInScreen.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 import 'package:quiqle_app/Widgets/button.dart';
