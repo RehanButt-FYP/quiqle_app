@@ -1,12 +1,14 @@
-import 'package:flutter/gestures.dart';
+import 'dart:ui';
+
+import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:quiqle_app/Screens/signInScreen.dart';
-import 'package:quiqle_app/Screens/verifyEmailScreen.dart';
+import 'package:quiqle_app/Widgets/button.dart';
+import 'package:quiqle_app/config/app_config.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
-import 'package:quiqle_app/Widgets/button.dart';
-import 'dart:ui';
-import 'package:quiqle_app/config/app_config.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   ForgotPasswordScreen({Key key, this.title}) : super(key: key);
@@ -18,8 +20,27 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+  final _email = TextEditingController();
 
-  _buildCard({Config config,}) {
+  void _attemptForgotPassword() {
+    if (_email.text.toString() != null &&
+        EmailValidator.validate(_email.text.toString())) {
+      FirebaseAuth.instance.sendPasswordResetEmail(email: _email.text);
+      Alert(
+              context: context,
+              title: "Request",
+              desc: "Password Reset Request Has Been Sent")
+          .show()
+          .then((value) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => SignInScreen()));
+      });
+    }
+  }
+
+  _buildCard({
+    Config config,
+  }) {
     return MaterialApp(
       home: Scaffold(
         body: SafeArea(
@@ -29,7 +50,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 color: Colors.white,
                 child: Column(
                   children: <Widget>[
-                    SizedBox(height: 20,),
+                    SizedBox(
+                      height: 20,
+                    ),
                     Center(
                       child: Text(
                         'Quiqle',
@@ -61,16 +84,19 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(40),
-                    topRight:  Radius.circular(40),
+                    topRight: Radius.circular(40),
                   ),
                   color: Colors.white,
                 ),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 23, horizontal:30),
+                  padding: EdgeInsets.symmetric(vertical: 23, horizontal: 30),
                   child: ListView(
                     children: <Widget>[
                       Padding(
-                        padding: const EdgeInsets.only(top:20.0, bottom: 30.0,),
+                        padding: const EdgeInsets.only(
+                          top: 20.0,
+                          bottom: 30.0,
+                        ),
                         child: Center(
                           child: Text(
                             'Forgot Password?',
@@ -88,60 +114,68 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           textAlign: TextAlign.center,
                           text: TextSpan(
                             style: Theme.of(context).textTheme.title.merge(
-                              TextStyle(
-                                fontFamily: 'Poppins-R',
-                                fontSize: 17.0,
-                                letterSpacing: 0.6,
-                                color: kTextFieldIconColor,
-                              ),
-                            ),
+                                  TextStyle(
+                                    fontFamily: 'Poppins-R',
+                                    fontSize: 17.0,
+                                    letterSpacing: 0.6,
+                                    color: kTextFieldIconColor,
+                                  ),
+                                ),
                             children: [
-                              TextSpan(text: 'Please enter your email address to',),
-                              TextSpan(text: '\nreset your password.',),
+                              TextSpan(
+                                text: 'Please enter your email address to',
+                              ),
+                              TextSpan(
+                                text: '\nreset your password.',
+                              ),
                             ],
                           ),
                         ),
                       ),
-
                       SizedBox(
-                        height: MediaQuery.of(context).size.height/7,
+                        height: MediaQuery.of(context).size.height / 7,
                       ),
                       TextFormField(
-                        style: TextStyle(color: kTextFieldColor,
-                          fontSize:kTextfieldLabelFontSize,
+                        controller: _email,
+                        style: TextStyle(
+                          color: kTextFieldColor,
+                          fontSize: kTextfieldLabelFontSize,
                           fontFamily: 'Poppins-M',
                         ),
                         keyboardType: TextInputType.emailAddress,
                         decoration: new InputDecoration(
                           hintText: 'Email Address',
                           hintStyle: Theme.of(context).textTheme.body1.merge(
-                            TextStyle(color: kTextFieldIconColor,
-                                fontSize: kTextfieldLabelFontSize,
-                                fontFamily: 'Poppins-R'),
-                          ),
+                                TextStyle(
+                                    color: kTextFieldIconColor,
+                                    fontSize: kTextfieldLabelFontSize,
+                                    fontFamily: 'Poppins-R'),
+                              ),
                           enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: kTextFieldBorderColor)),
+                              borderSide:
+                                  BorderSide(color: kTextFieldBorderColor)),
                           focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color:kMainColor)),
-                          prefixIcon: Image.asset('images/email_icon.png', width: 15, height: 15, ),
+                              borderSide: BorderSide(color: kMainColor)),
+                          prefixIcon: Image.asset(
+                            'images/email_icon.png',
+                            width: 15,
+                            height: 15,
+                          ),
                         ),
                       ),
-
                       SizedBox(
-                        height: MediaQuery.of(context).size.height/14,
+                        height: MediaQuery.of(context).size.height / 14,
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal:50.0,),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 50.0,
+                        ),
                         child: Button(
-                          onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>VerifyEmailScreen()));
-                          },
+                          onTap: _attemptForgotPassword,
                           buttonText: 'Reset',
                           width: double.infinity,
                         ),
                       ),
-
-
                     ],
                   ),
                 ),

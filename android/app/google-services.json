@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "116369203956",
+    "firebase_url": "https://quiqle-6e0e1.firebaseio.com",
+    "project_id": "quiqle-6e0e1",
+    "storage_bucket": "quiqle-6e0e1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:116369203956:android:6b767b5cd07c7b9d0b34a1",
+        "android_client_info": {
+          "package_name": "com.example.quiqle_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "116369203956-45a0puidh248rrokitgi4p0tssdl1hmv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAn4jnhh645g49UTcS0QIgJphtOD06u1yw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "116369203956-45a0puidh248rrokitgi4p0tssdl1hmv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "116369203956-n6toiv4j7ali6d7tfrn1ukbampv563sq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.quiqleApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
